@@ -18,7 +18,8 @@ const registrationSchema = new mongoose.Schema({
   },
 });
 
-const regSchema = new mongoose.model("registrationSchema", registrationSchema);
+module.exports = mongoose.model("registrationSchema", registrationSchema);
+// const regSchema = new mongoose.model("registrationSchema", registrationSchema);
 // "registrationSchema" is the name of the mongodb tables
 
-module.export = regSchema;
+// module.exports = regSchema;
