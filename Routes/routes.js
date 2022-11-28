@@ -21,6 +21,8 @@ router.post("/register", async (req, res) => {
     // check if a user with the same email Id is already present in the DB
     console.log("Before registeredUser User");
 
+    // regSchema.findOne;
+
     const registeredUser = await regSchema.findOne({ email: email });
 
     if (registeredUser) {
@@ -41,8 +43,6 @@ router.post("/register", async (req, res) => {
   } catch (err) {
     console.log("Error:", err);
   }
-
-  //   await res;
 });
 
 module.exports = router;
