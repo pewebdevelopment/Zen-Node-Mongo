@@ -2,9 +2,11 @@ const express = require("Express");
 
 const mongoose = require("Mongoose");
 
+const router = require("./Routes/routes");
+
 const app = express();
 
-// V4bzbPv49eJtNagD
+// TempPass = V4bzbPv49eJtNagD
 
 mongoose
   .connect(
@@ -18,6 +20,8 @@ mongoose
   })
   .finally();
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("Server Root Dir");
 });
@@ -29,6 +33,8 @@ app.get("/home", (req, res) => {
 app.get("/about", (req, res) => {
   res.send("About Page");
 });
+
+app.use(router);
 
 // start our server
 app.listen(8080, () => {
