@@ -10,29 +10,36 @@ router.post("/register", async (req, res) => {
   // destructuring req.body
   const { username, email, password } = req.body;
 
-  if (username && email && password) {
-    try {
-      // saving data inside database data
+  try {
+    // checking if the request has everythign in it
+    if (!username && !email && !password) {
+      res.status(403).json("Enter all data correctly");
+    }
 
-      // check if a user with the same email Id is already present in the DB
-      const registeredUser = await regSchema.findOne({ email: email });
+    // saving data inside database data
 
-      if (registeredUser) {
-        res.status(422).json("Email already exists");
-      } else {
-        const addUser = new regSchema({
-          usernmae: username,
-          email: email,
-          pass: password,
-        });
+    // check if a user with the same email Id is already present in the DB
+    console.log("Before registeredUser User");
 
-        await addUser.save();
+    const registeredUser = await regSchema.findOne({ email: email });
 
-        res.status(201).json("User Registration Successful");
-      }
-    } catch {}
-  } else {
-    res.status(403).json("Enter all data correctly");
+    if (registeredUser) {
+      res.status(422).json("Email already exists");
+    } else {
+      console.log("inside else block");
+
+      const addUser = new regSchema({
+        username: username,
+        email: email,
+        pass: password,
+      });
+
+      await addUser.save();
+
+      res.status(201).json("User Registration Successful");
+    }
+  } catch (err) {
+    console.log("Error:", err);
   }
 
   //   await res;
