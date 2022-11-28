@@ -1,4 +1,4 @@
-const mongoose = require("Mongoose");
+const mongoose = require("mongoose");
 
 // define the Mongoose Scheme
 

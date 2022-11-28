@@ -1,6 +1,6 @@
-const express = require("Express");
+const express = require("express");
 
-const mongoose = require("Mongoose");
+const mongoose = require("eongoose");
 
 const router = require("./Routes/routes");
 

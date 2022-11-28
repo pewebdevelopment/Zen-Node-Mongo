@@ -1,4 +1,4 @@
-const router = require("Express").Router();
+const router = require("express").Router();
 const regSchema = require("../models/registrationSchema");
 
 // router.post();
@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
     // saving data inside database data
 
     // check if a user with the same email Id is already present in the DB
-    console.log("Before registeredUser User");
+    console.log("Before registeredUser");
 
     // regSchema.findOne;
 
