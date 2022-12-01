@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const regSchema = require("../models/registrationSchema");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 // router.post();
 
 router.post("/register", async (req, res) => {
@@ -30,10 +31,12 @@ router.post("/register", async (req, res) => {
     } else {
       console.log("inside else block");
 
+      const hashedPassword = await bcrypt.hash(password, 10);
+
       const addUser = new regSchema({
         username: username,
         email: email,
-        pass: jwt.encrypt(password, process.env.SECRETKEY),
+        pass: hashedPassword,
       });
 
       const newUser = await addUser.save(); // this creates a new collection as per the Mongood, MongoDB Documentation
@@ -93,6 +96,39 @@ router.get("/register", async (req, res) => {
   } catch (err) {
     res.status(422).send(err);
     console.log("Err in retriving all Users:", err);
+  }
+});
+
+router.post("/login", async (req, res) => {
+  console.log("Login Route", req.body);
+  //   res.status(200).json("Registration Successful");
+
+  // destructuring req.body
+  const { email, password } = req.body;
+
+  try {
+    // checking if the request has everythign in it
+    if (!email && !password) {
+      res.status(403).send("Oops! Enter all information correctly");
+    }
+
+    const DBUser = await regSchema.findOne({ email: email });
+
+    if (DBUser) {
+      const matched = await bcrypt.compare(password, DBUser.pass);
+
+      if (matched) {
+        const { pass, ...info } = DBUser; // destructuring and removing pass and remaining info
+        res.status(201).send(info);
+      }
+      res.status(422).send("Email & Password did not match");
+    } else {
+      console.log("User email does not exist");
+      res.status(501).send("User email does not exist");
+    }
+  } catch (err) {
+    console.log("Error:", err);
+    res.status(501).send(err);
   }
 });
 
