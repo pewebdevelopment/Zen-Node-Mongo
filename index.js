@@ -1,17 +1,17 @@
 const express = require("express");
-
 const mongoose = require("mongoose");
-
+const dotenv = require("dotenv");
 const router = require("./Routes/routes");
 
+// The express app is now initialized
 const app = express();
 
 // TempPass = V4bzbPv49eJtNagD
+dotenv.config(); // We have to run this config function once in the server
+app.use(express.json());
 
 mongoose
-  .connect(
-    "mongodb+srv://zenithphysics:V4bzbPv49eJtNagD@cluster0.8lmulno.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGOURI)
   .then(() => {
     console.log("Database Connection Succesful");
   })
@@ -20,21 +20,19 @@ mongoose
   })
   .finally();
 
-app.use(express.json());
-
 app.get("/", (req, res) => {
   res.send("Server Root Dir");
 });
 
-app.get("/home", (req, res) => {
-  res.send("HOME Page");
-});
+// app.get("/home", (req, res) => {
+//   res.send("HOME Page");
+// });
 
-app.get("/about", (req, res) => {
-  res.send("About Page");
-});
+// app.get("/about", (req, res) => {
+//   res.send("About Page");
+// });
 
-app.use(router);
+app.use("/api", router);
 
 // start our server
 app.listen(8080, () => {
