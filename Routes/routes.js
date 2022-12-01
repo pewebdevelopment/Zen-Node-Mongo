@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const regSchema = require("../models/registrationSchema");
-
+const jwt = require("jsonwebtoken");
 // router.post();
 
 router.post("/register", async (req, res) => {
@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
       const addUser = new regSchema({
         username: username,
         email: email,
-        pass: password,
+        pass: jwt.encrypt(password, process.env.SECRETKEY),
       });
 
       const newUser = await addUser.save(); // this creates a new collection as per the Mongood, MongoDB Documentation
