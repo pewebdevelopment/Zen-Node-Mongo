@@ -7,7 +7,7 @@ const router = require("./Routes/routes");
 const app = express();
 
 // TempPass = V4bzbPv49eJtNagD
-dotenv.config(); // We have to run this config function once in the server
+dotenv.config(); // We have to run this config function once in the server to make our .env file data accessible
 app.use(express.json());
 
 mongoose

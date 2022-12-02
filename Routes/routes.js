@@ -2,7 +2,6 @@ const router = require("express").Router();
 const regSchema = require("../models/registrationSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-// router.post();
 
 router.post("/register", async (req, res) => {
   console.log("Registeration Route", req.body);
@@ -140,11 +139,21 @@ router.post("/login", async (req, res) => {
       const matched = await bcrypt.compare(password, DBUser.pass);
 
       if (matched) {
-        const accessToken = jwt.sign();
-        const { pass, ...info } = DBUser; // destructuring and removing pass and remaining info
-        res.status(201).send(info);
+        // This will give the entire document of the DB User including th ID
+        //destructuring and removing pass and remaining info
+        const { pass, ...info } = DBUser._doc;
+
+        // We are creating the accessToken for the user to be able to navigate the server successfully with his identity
+        // accessToken expires in 10 days
+        const accessToken = jwt.sign(
+          { id: DBUser.id, admin: DBUser.admin },
+          process.env.SECRET_KEY,
+          { expiresIn: "10d" }
+        );
+        res.status(200).send({ ...info, accessToken });
+      } else {
+        res.status(422).send("Email & Password did not match");
       }
-      res.status(422).send("Email & Password did not match");
     } else {
       console.log("User email does not exist");
       res.status(501).send("User email does not exist");
