@@ -87,15 +87,37 @@ router.delete("/register/:id", async (req, res) => {
   }
 });
 
-router.get("/register", async (req, res) => {
-  // const allusers;
+router.get("/getallusers", async (req, res) => {
+  // destructuring req.body. Extracting the email & password of the current user who sent the request
+  const { email, password } = req.body;
 
-  try {
-    const allUsers = await regSchema.find(); // gives us all users in the DB collection
-    res.status(201).send(allUsers);
-  } catch (err) {
-    res.status(422).send(err);
-    console.log("Err in retriving all Users:", err);
+  const DBUser = await regSchema.findOne({ email: email }); // we can only send in findone, whatever we are sending in the body
+
+  if (DBUser) {
+    // match the passwords
+    const matched = await bcrypt.compare(password, DBUser.pass);
+
+    // both DBUSer.admin  should eb true and passwords should match
+    if (DBUser.admin === true && matched) {
+      try {
+        const allUsers = await regSchema.find(); // gives us all users in the DB collection
+        res.status(201).send(allUsers);
+      } catch (err) {
+        res.status(422).send(err);
+        console.log("Err in retriving all Users:", err);
+      }
+    } else {
+      if (!DBUser.admin) {
+        res.status(422).json("User is not an Admin");
+        console.log("User is not an Admin");
+      } else {
+        res.status(422).json("Password of the Admin user was incorrect");
+        console.log("Password of the Admin user was incorrect");
+      }
+    }
+  } else {
+    res.status(422).json("Admin User not found");
+    console.log("Admin User not found");
   }
 });
 
@@ -103,7 +125,7 @@ router.post("/login", async (req, res) => {
   console.log("Login Route", req.body);
   //   res.status(200).json("Registration Successful");
 
-  // destructuring req.body
+  // destructuring req.body. Extracting the Email and password of the current user who sent the request
   const { email, password } = req.body;
 
   try {
@@ -118,6 +140,7 @@ router.post("/login", async (req, res) => {
       const matched = await bcrypt.compare(password, DBUser.pass);
 
       if (matched) {
+        const accessToken = jwt.sign();
         const { pass, ...info } = DBUser; // destructuring and removing pass and remaining info
         res.status(201).send(info);
       }
