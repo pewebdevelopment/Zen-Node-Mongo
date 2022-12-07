@@ -47,6 +47,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Following are called as the REST APIs
+
 router.put("/register/:id", async (req, res) => {
   console.log("Registeration Route PUT Req", req.body);
   const { username, email, password } = req.body;
