@@ -6,3 +6,10 @@
 /Nuxt3Frontend/.nuxt
 
 /.env
+
+# Logs
+/Nuxt3Frontend//logs
+/Nuxt3Frontend/*.log
+/Nuxt3Frontend/npm-debug.log*
+/Nuxt3Frontend/yarn-debug.log*
+/Nuxt3Frontend/yarn-error.log*
