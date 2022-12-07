@@ -1,3 +1,8 @@
 /node_modules
 
+/Nuxt3Frontend/node_modules
+
+/Nuxt3Frontend/*.nuxt
+/Nuxt3Frontend/.nuxt
+
 /.env
