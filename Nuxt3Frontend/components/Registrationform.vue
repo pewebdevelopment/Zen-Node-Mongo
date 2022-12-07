@@ -107,15 +107,3 @@ export default {
   },
 };
 </script>
-
-<script setup>
-// async function addCompany(data) {
-//   await $fetch("/api/v1/companies", {
-//     method: "POST",
-//     body: data,
-//   });
-// }
-// const { data: count } = await useFetch("/api/count");
-
-// import { json } from "stream/consumers";
-</script>

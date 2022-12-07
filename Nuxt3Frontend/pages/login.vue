@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Loginform from "../components/loginform.vue";
+import Loginform from "@/components/Loginform.vue";
 
 export default {
   name: "LoginPage",
