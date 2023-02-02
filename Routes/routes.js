@@ -122,7 +122,7 @@ router.get("/getallusers", async (req, res) => {
   }
 });
 
-router.post("/getallusers", async (req, res) => {
+router.post("/getOneusers", async (req, res) => {
   // destructuring req.body. Extracting the email & password of the current user who sent the request
   const { email, password } = req.body;
 
